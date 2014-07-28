@@ -15,11 +15,10 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class WebCrawlerMain extends javax.swing.JFrame {
 
-
     private ApplicationContext context;
-    
+
     private ProcessManager processManager;
-    
+
     /**
      * Creates new form WebCrawlerMain
      */
@@ -27,10 +26,10 @@ public class WebCrawlerMain extends javax.swing.JFrame {
         initComponents();
         initSpringComponents();
     }
-    
+
     private void initSpringComponents() {
         context = new ClassPathXmlApplicationContext("applicationContext.xml");
-        processManager = (ProcessManager)context.getBean("processManager");
+        processManager = (ProcessManager) context.getBean("processManager");
         processManager.setParentComponent(this);
     }
 
@@ -95,13 +94,10 @@ public class WebCrawlerMain extends javax.swing.JFrame {
 
 
     private void btnDownloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDownloadActionPerformed
-        // TODO add your handling code here:
 
-        //JOptionPane.showMessageDialog(this, txtURL.getText());
-       // JOptionPane.showMessageDialog(this, "Is URL valid? " + uRLManager.validateURL(txtURL.getText()));
-        //txtURL.getText()
+        btnDownload.setEnabled(false);
         processManager.processDownload(txtURL.getText(), null);
-
+        btnDownload.setEnabled(true);
 
     }//GEN-LAST:event_btnDownloadActionPerformed
 

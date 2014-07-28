@@ -7,16 +7,13 @@ package com.test.webcrawler.manager.impl;
 
 import com.test.webcrawler.manager.ImageManager;
 import com.test.webcrawler.manager.ProcessManager;
+import com.test.webcrawler.manager.StorageManager;
 import com.test.webcrawler.manager.URLManager;
-import com.test.webcrawler.model.ImageDTO;
 import com.test.webcrawler.model.ResultDTO;
 import java.awt.Component;
 import java.io.IOException;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -36,6 +33,9 @@ public class ProcessManagerImpl implements ProcessManager {
     @Autowired
     private ImageManager imageManager;
     
+    @Autowired
+    private StorageManager storageManager;
+    
     private Component parentComponent;
     
     private ExecutorService executorService;
@@ -47,8 +47,10 @@ public class ProcessManagerImpl implements ProcessManager {
         if(uRLManager.validateURL(url)) {
         
             try {
-                imageManager.setUrl(url);
-                imageManager.getImageData();
+                imageManager.setUrl(url);                
+                storageManager.setStoragePath("/home/jose/Desktop/crap/crappy");
+                storageManager.downloadImagesFromRemote(imageManager.getImageData());
+                
             } catch (IOException ex) {
                 Logger.getLogger(ProcessManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IllegalArgumentException ex) {
