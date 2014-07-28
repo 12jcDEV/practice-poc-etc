@@ -8,9 +8,15 @@ package com.test.webcrawler.manager.impl;
 import com.test.webcrawler.manager.ImageManager;
 import com.test.webcrawler.manager.ProcessManager;
 import com.test.webcrawler.manager.URLManager;
+import com.test.webcrawler.model.ImageDTO;
 import com.test.webcrawler.model.ResultDTO;
 import java.awt.Component;
 import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -31,6 +37,8 @@ public class ProcessManagerImpl implements ProcessManager {
     private ImageManager imageManager;
     
     private Component parentComponent;
+    
+    private ExecutorService executorService;
 
     @Override
     public ResultDTO processDownload(String url, String folderLocation) {
@@ -38,10 +46,16 @@ public class ProcessManagerImpl implements ProcessManager {
         //check first if url is valid
         if(uRLManager.validateURL(url)) {
         
-            
             try {
-                imageManager.getImageData(url);
+                imageManager.setUrl(url);
+                imageManager.getImageData();
             } catch (IOException ex) {
+                Logger.getLogger(ProcessManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IllegalArgumentException ex) {
+                Logger.getLogger(ProcessManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(ProcessManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ExecutionException ex) {
                 Logger.getLogger(ProcessManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
             

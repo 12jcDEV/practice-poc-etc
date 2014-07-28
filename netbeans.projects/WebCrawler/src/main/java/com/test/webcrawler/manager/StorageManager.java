@@ -7,18 +7,17 @@
 package com.test.webcrawler.manager;
 
 import com.test.webcrawler.model.ImageDTO;
-import java.io.IOException;
+import com.test.webcrawler.model.ResultDTO;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 /**
  *
  * @author jose
  */
-public interface ImageManager {
+public interface StorageManager {
 
-    public List<ImageDTO> getImageData() throws IOException, IllegalArgumentException,  InterruptedException, ExecutionException;
+    public ResultDTO getImagesFromRemote(List<ImageDTO> list);
     
-    public void setUrl(String url);
+    public Boolean writeToDisk();
     
 }
