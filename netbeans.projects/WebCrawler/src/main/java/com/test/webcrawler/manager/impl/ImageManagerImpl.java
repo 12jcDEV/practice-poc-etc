@@ -37,11 +37,27 @@ public class ImageManagerImpl implements ImageManager {
 
         for (Element src : media) {
             if (src.tagName().equals("img")) {
-            ImageDTO dto = new ImageDTO();
-            
+                ImageDTO dto = new ImageDTO();
+                dto.setUrlAddress(src.attr("abs:src"));
+                dto.setFileName(getFileName(src.attr("abs:src")));
+                System.out.println(dto);
+                images.add(dto);
             }
         }
 
+        return images;
     }
 
+    private String getFileName(String longName) {
+
+        int indexname = longName.lastIndexOf("/");
+        if (indexname == longName.length()) {
+            longName = longName.substring(1, indexname);
+        }
+
+        indexname = longName.lastIndexOf("/");
+        String name = longName.substring(indexname, longName.length());
+
+        return name;
+    }
 }

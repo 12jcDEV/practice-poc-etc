@@ -5,10 +5,14 @@
  */
 package com.test.webcrawler.manager.impl;
 
+import com.test.webcrawler.manager.ImageManager;
 import com.test.webcrawler.manager.ProcessManager;
 import com.test.webcrawler.manager.URLManager;
 import com.test.webcrawler.model.ResultDTO;
 import java.awt.Component;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,13 +27,27 @@ public class ProcessManagerImpl implements ProcessManager {
     @Autowired
     private URLManager uRLManager;
     
+    @Autowired
+    private ImageManager imageManager;
+    
     private Component parentComponent;
 
     @Override
     public ResultDTO processDownload(String url, String folderLocation) {
 
         //check first if url is valid
-        JOptionPane.showMessageDialog(parentComponent, "Is url valid? " + uRLManager.validateURL(url));
+        if(uRLManager.validateURL(url)) {
+        
+            
+            try {
+                imageManager.getImageData(url);
+            } catch (IOException ex) {
+                Logger.getLogger(ProcessManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        } else {
+            JOptionPane.showMessageDialog(parentComponent, "Invalid URL, please enter a valid URL");
+        }
         
         return null;
     }
