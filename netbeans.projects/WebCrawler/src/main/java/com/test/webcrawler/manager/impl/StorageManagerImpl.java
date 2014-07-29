@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.List;
+import org.apache.commons.lang3.time.StopWatch;
 import org.springframework.stereotype.Service;
 
 /**
@@ -29,13 +30,14 @@ public class StorageManagerImpl implements StorageManager {
 
     @Override
     public ResultDTO downloadImagesFromRemote(List<ImageDTO> list) throws FileNotFoundException, IOException {
-
+        StopWatch stopWatch = new StopWatch();
         URL url = null;
         InputStream in = null;
         OutputStream out = null;
 
         try {
             for (ImageDTO dto : list) {
+                stopWatch.start();
                 url = new URL(dto.getUrlAddress());
                 in = url.openStream();
 
@@ -44,6 +46,9 @@ public class StorageManagerImpl implements StorageManager {
                     out.write(b);
                     
                 }
+                stopWatch.stop();
+                System.out.println("Total Time taken: " + stopWatch.toString());
+                stopWatch.reset();
             }
         } finally {
             in.close();
