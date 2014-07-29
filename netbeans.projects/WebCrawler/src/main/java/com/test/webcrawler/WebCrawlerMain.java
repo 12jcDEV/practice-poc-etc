@@ -8,6 +8,8 @@ package com.test.webcrawler;
 import com.test.webcrawler.manager.ProcessManager;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -49,11 +51,11 @@ public class WebCrawlerMain extends javax.swing.JFrame {
     }
 
     public JLabel getjLabel1() {
-        return jLabel1;
+        return lblEnterURL;
     }
 
     public void setjLabel1(JLabel jLabel1) {
-        this.jLabel1 = jLabel1;
+        this.lblEnterURL = jLabel1;
     }
 
     public JTextField getTxtURL() {
@@ -64,6 +66,40 @@ public class WebCrawlerMain extends javax.swing.JFrame {
         this.txtURL = txtURL;
     }
 
+    public JLabel getLblDownload() {
+        return lblDownload;
+    }
+
+    public void setLblDownload(JLabel lblDownload) {
+        this.lblDownload = lblDownload;
+    }
+
+    public JLabel getLblEnterURL() {
+        return lblEnterURL;
+    }
+
+    public void setLblEnterURL(JLabel lblEnterURL) {
+        this.lblEnterURL = lblEnterURL;
+    }
+
+    public JPanel getPnlDownload() {
+        return pnlDownload;
+    }
+
+    public void setPnlDownload(JPanel pnlDownload) {
+        this.pnlDownload = pnlDownload;
+    }
+
+    public JProgressBar getProgBarDownload() {
+        return progBarDownload;
+    }
+
+    public void setProgBarDownload(JProgressBar progBarDownload) {
+        this.progBarDownload = progBarDownload;
+    }
+    
+    
+
     /**
      * Creates new form WebCrawlerMain
      */
@@ -71,6 +107,13 @@ public class WebCrawlerMain extends javax.swing.JFrame {
         initComponents();
         initSpringComponents();
         fixComponentVisibility();
+    }
+    
+    public void setFileInfo(String fileName, int length) {
+    
+        pnlDownload.setVisible(true);
+        lblDownload.setText(DOWNLOAD_TEXT + fileName);
+    
     }
     
     private void fixComponentVisibility() {
@@ -92,7 +135,7 @@ public class WebCrawlerMain extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        lblEnterURL = new javax.swing.JLabel();
         txtURL = new javax.swing.JTextField();
         btnDownload = new javax.swing.JButton();
         pnlDownload = new javax.swing.JPanel();
@@ -102,7 +145,7 @@ public class WebCrawlerMain extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Image Downloader");
 
-        jLabel1.setText("Enter URL");
+        lblEnterURL.setText("Enter URL");
 
         txtURL.setToolTipText("Type URL here");
         txtURL.addActionListener(new java.awt.event.ActionListener() {
@@ -127,9 +170,11 @@ public class WebCrawlerMain extends javax.swing.JFrame {
             .addGroup(pnlDownloadLayout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addGroup(pnlDownloadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblDownload)
-                    .addComponent(progBarDownload, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(247, Short.MAX_VALUE))
+                    .addGroup(pnlDownloadLayout.createSequentialGroup()
+                        .addComponent(lblDownload)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(progBarDownload, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         pnlDownloadLayout.setVerticalGroup(
             pnlDownloadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -147,16 +192,14 @@ public class WebCrawlerMain extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(22, 22, 22)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblEnterURL)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtURL, javax.swing.GroupLayout.PREFERRED_SIZE, 564, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnDownload))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(pnlDownload, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                    .addComponent(pnlDownload, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -164,7 +207,7 @@ public class WebCrawlerMain extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(50, 50, 50)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
+                    .addComponent(lblEnterURL)
                     .addComponent(txtURL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnDownload))
                 .addGap(84, 84, 84)
@@ -178,12 +221,25 @@ public class WebCrawlerMain extends javax.swing.JFrame {
 
     private void btnDownloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDownloadActionPerformed
 
-        btnDownload.setEnabled(false);
+        disableSearching();
         processManager.processDownload(txtURL.getText(), null);
-        btnDownload.setEnabled(true);
 
     }//GEN-LAST:event_btnDownloadActionPerformed
 
+    public void disableSearching() {
+        btnDownload.setEnabled(false);
+        txtURL.setEditable(false);
+        txtURL.setEnabled(false);
+    }
+    
+    public void enableSearching() {
+        btnDownload.setEnabled(true);
+        txtURL.setEditable(true);
+        txtURL.setEnabled(true);
+        progBarDownload.setValue(0);
+        pnlDownload.setVisible(false);
+    }
+    
     private void txtURLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtURLActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtURLActionPerformed
@@ -225,8 +281,8 @@ public class WebCrawlerMain extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDownload;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lblDownload;
+    private javax.swing.JLabel lblEnterURL;
     private javax.swing.JPanel pnlDownload;
     private javax.swing.JProgressBar progBarDownload;
     private javax.swing.JTextField txtURL;
