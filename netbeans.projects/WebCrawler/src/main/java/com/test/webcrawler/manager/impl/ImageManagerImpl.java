@@ -62,7 +62,6 @@ public class ImageManagerImpl implements ImageManager {
                         ImageDTO dto = new ImageDTO();
                         dto.setUrlAddress(src.attr("abs:src"));
                         dto.setFileName(getFileName(src.attr("abs:src")));
-                        System.out.println(dto);
                         images.add(dto);
                     }
                 }

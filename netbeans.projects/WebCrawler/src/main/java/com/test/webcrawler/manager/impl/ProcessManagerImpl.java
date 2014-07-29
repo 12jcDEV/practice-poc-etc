@@ -8,15 +8,14 @@ package com.test.webcrawler.manager.impl;
 import com.test.webcrawler.WebCrawlerMain;
 import com.test.webcrawler.manager.ImageManager;
 import com.test.webcrawler.manager.ProcessManager;
-import com.test.webcrawler.manager.StorageManager;
 import com.test.webcrawler.manager.URLManager;
 import com.test.webcrawler.model.ResultDTO;
 import java.awt.Component;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,42 +29,67 @@ public class ProcessManagerImpl implements ProcessManager {
 
     @Autowired
     private URLManager uRLManager;
-    
+
     @Autowired
     private ImageManager imageManager;
-    
-    @Autowired
-    private StorageManager storageManager;
-    
+
+    private DownloadTask downloadTask;
+
     private WebCrawlerMain parentComponent;
-    
+
     private ExecutorService executorService;
 
     @Override
     public ResultDTO processDownload(String url, String folderLocation) {
 
         //check first if url is valid
-        if(uRLManager.validateURL(url)) {
-        
+        if (uRLManager.validateURL(url)) {
+
             try {
-                imageManager.setUrl(url);                
-                storageManager.setStoragePath("/home/jose/Desktop/crap/crappy");
-                storageManager.downloadImagesFromRemote(imageManager.getImageData());
-                
+                imageManager.setUrl(url);
+
+                downloadTask = new DownloadTask(new StorageManagerImpl());
+
+                downloadTask.setDownloadFolder(folderLocation);
+                downloadTask.setImages(imageManager.getImageData());
+                downloadTask.setUi(parentComponent);
+
+                downloadTask.addPropertyChangeListener(new PropertyChangeListener() {
+
+                    @Override
+                    public void propertyChange(PropertyChangeEvent evt) {
+
+                        if (evt.getPropertyName().equals("progress")) {
+
+                            int progress = (Integer) evt.getNewValue();
+                            ProcessManagerImpl.this.parentComponent.getProgBarDownload().setValue(progress);
+                        }
+
+                    }
+                });
+                parentComponent.getProgBarDownload().setValue(0);
+                downloadTask.execute();
+
             } catch (IOException ex) {
-                Logger.getLogger(ProcessManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
             } catch (IllegalArgumentException ex) {
-                Logger.getLogger(ProcessManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
             } catch (InterruptedException ex) {
-                Logger.getLogger(ProcessManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
             } catch (ExecutionException ex) {
-                Logger.getLogger(ProcessManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            
+
         } else {
             JOptionPane.showMessageDialog(parentComponent, "Invalid URL, please enter a valid URL");
+                   
         }
-        
+
+         parentComponent.enableSearching();
+
+      
         return null;
     }
 
@@ -77,8 +101,4 @@ public class ProcessManagerImpl implements ProcessManager {
         this.parentComponent = parentComponent;
     }
     
-    
-    
-    
-
 }

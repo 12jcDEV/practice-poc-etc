@@ -6,11 +6,8 @@
 
 package com.test.webcrawler.manager;
 
-import com.test.webcrawler.model.ImageDTO;
-import com.test.webcrawler.model.ResultDTO;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.List;
+import java.io.InputStream;
 
 /**
  *
@@ -18,8 +15,12 @@ import java.util.List;
  */
 public interface StorageManager {
 
-    public ResultDTO downloadImagesFromRemote(List<ImageDTO> list) throws FileNotFoundException, IOException;
-    
-    public void setStoragePath(String path);
+    public void downloadImagesFromRemote(String imageURL) throws IOException;
+
+     public void disconnect() throws IOException;
+     
+     public InputStream getInputStream();
+     
+     public int getContentLength();
     
 }

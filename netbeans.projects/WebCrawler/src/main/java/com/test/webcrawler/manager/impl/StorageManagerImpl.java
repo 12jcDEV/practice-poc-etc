@@ -6,63 +6,63 @@
 package com.test.webcrawler.manager.impl;
 
 import com.test.webcrawler.manager.StorageManager;
-import com.test.webcrawler.model.ImageDTO;
-import com.test.webcrawler.model.ResultDTO;
-import java.io.BufferedOutputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
-import org.apache.commons.lang3.time.StopWatch;
-import org.springframework.stereotype.Service;
 
 /**
  *
  * @author jose
  */
-@Service("storageManager")
 public class StorageManagerImpl implements StorageManager {
 
     private String folderPath;
 
+    private HttpURLConnection httpConnection;
+
+    private InputStream inputStream;
+    
+    private int contentLength;
+
     @Override
-    public ResultDTO downloadImagesFromRemote(List<ImageDTO> list) throws FileNotFoundException, IOException {
-        StopWatch stopWatch = new StopWatch();
-        URL url = null;
-        InputStream in = null;
-        OutputStream out = null;
+    public void downloadImagesFromRemote(String imageURL) throws FileNotFoundException, IOException {
+        URL url = new URL(imageURL);
+        httpConnection = (HttpURLConnection) url.openConnection();
+        int responseCode = httpConnection.getResponseCode();
 
-        try {
-            for (ImageDTO dto : list) {
-                stopWatch.start();
-                url = new URL(dto.getUrlAddress());
-                in = url.openStream();
-                //System.out.println("File Size: " + url.);
+        if (responseCode == HttpURLConnection.HTTP_OK) {
 
-                out = new BufferedOutputStream(new FileOutputStream(folderPath + "/" + dto.getFileName()));
-                for (int b; (b = in.read()) != -1;) {
-                    out.write(b);
-                    
-                }
-                stopWatch.stop();
-                System.out.println("Total Time taken: " + stopWatch.toString());
-                stopWatch.reset();
-            }
-        } finally {
-            in.close();
-            out.close();
+            inputStream = httpConnection.getInputStream();
+            contentLength = httpConnection.getContentLength();
+
+        } else {
+
+            throw new IOException("Error with url " + imageURL + ": " + responseCode);
+
         }
-        
-        System.out.println("Downloading complete!");
-        return null;
+
+    }
+
+    public void disconnect() throws IOException {
+
+        inputStream.close();
+        httpConnection.disconnect();
+
     }
 
     @Override
-    public void setStoragePath(String path) {
-        folderPath = path;
+    public InputStream getInputStream() {
+
+        return inputStream;
+
     }
 
+    @Override
+    public int getContentLength() {
+        return contentLength;
+    }
+    
+   
 }
