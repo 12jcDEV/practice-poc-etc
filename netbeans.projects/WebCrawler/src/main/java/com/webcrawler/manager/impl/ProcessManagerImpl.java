@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.test.webcrawler.manager.impl;
+package com.webcrawler.manager.impl;
 
-import com.test.webcrawler.WebCrawlerMain;
-import com.test.webcrawler.manager.ImageManager;
-import com.test.webcrawler.manager.ProcessManager;
-import com.test.webcrawler.manager.URLManager;
-import com.test.webcrawler.model.ResultDTO;
+import com.webcrawler.WebCrawlerMain;
+import com.webcrawler.manager.ImageManager;
+import com.webcrawler.manager.ProcessManager;
+import com.webcrawler.manager.URLManager;
+import com.webcrawler.model.ResultDTO;
 import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -85,12 +85,11 @@ public class ProcessManagerImpl implements ProcessManager {
 
         } else {
             JOptionPane.showMessageDialog(parentComponent, "Invalid URL, please enter a valid URL");
-                   
+
         }
 
-         parentComponent.enableSearching();
+        parentComponent.enableSearching();
 
-      
         return null;
     }
 
@@ -101,5 +100,5 @@ public class ProcessManagerImpl implements ProcessManager {
     public void setParentComponent(WebCrawlerMain parentComponent) {
         this.parentComponent = parentComponent;
     }
-    
+
 }

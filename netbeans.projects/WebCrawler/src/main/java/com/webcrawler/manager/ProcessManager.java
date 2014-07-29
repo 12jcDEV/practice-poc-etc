@@ -4,10 +4,10 @@
  * and open the template in the editor.
  */
 
-package com.test.webcrawler.manager;
+package com.webcrawler.manager;
 
-import com.test.webcrawler.WebCrawlerMain;
-import com.test.webcrawler.model.ResultDTO;
+import com.webcrawler.WebCrawlerMain;
+import com.webcrawler.model.ResultDTO;
 
 /**
  *

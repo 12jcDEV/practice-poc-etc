@@ -4,9 +4,9 @@
  * and open the template in the editor.
  */
 
-package com.test.webcrawler.manager.impl;
+package com.webcrawler.manager.impl;
 
-import com.test.webcrawler.manager.URLManager;
+import com.webcrawler.manager.URLManager;
 import org.apache.commons.validator.routines.UrlValidator;
 import org.springframework.stereotype.Service;
 

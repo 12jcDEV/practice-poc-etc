@@ -24,6 +24,9 @@ public class WebCrawlerUITest {
 
     JFrameOperator main;
 
+    private static final String WEB_CRAWLER_MAIN_PACKAGE = "com.webcrawler.WebCrawlerMain";
+    private static final String IMAGE_DOWNLOADER = "Image Downloader";
+
     public WebCrawlerUITest() {
     }
 
@@ -47,9 +50,9 @@ public class WebCrawlerUITest {
     @Test
     public void testCLickDownloadItWithoutURL() throws Exception {
 
-        new ClassReference("com.test.webcrawler.WebCrawlerMain").startApplication();
+        new ClassReference(WEB_CRAWLER_MAIN_PACKAGE).startApplication();
 
-        main = new JFrameOperator("Image Downloader");
+        main = new JFrameOperator(IMAGE_DOWNLOADER);
 
         //start application
         new JButtonOperator(main, "Download Images!").push();
@@ -57,20 +60,32 @@ public class WebCrawlerUITest {
         new JDialogOperator(main, "Error");
 
     }
-    
+
     @Test
     public void testEnterURL() throws Exception {
-    
-        
-        new ClassReference("com.test.webcrawler.WebCrawlerMain").startApplication();
 
-        main = new JFrameOperator("Image Downloader");
+        new ClassReference(WEB_CRAWLER_MAIN_PACKAGE).startApplication();
 
-        
+        main = new JFrameOperator(IMAGE_DOWNLOADER);
+
         new JTextFieldOperator(main, 0).setText("safsfdsaffads");
-         new JButtonOperator(main, "Download Images!").push();
-         new JDialogOperator(main, "Error");
-    
+        new JButtonOperator(main, "Download Images!").push();
+        new JDialogOperator(main, "Error");
+
+    }
+
+    @Test
+    public void testOpenFileChooser() throws Exception {
+
+        new ClassReference(WEB_CRAWLER_MAIN_PACKAGE).startApplication();
+        main = new JFrameOperator(IMAGE_DOWNLOADER);
+        new JButtonOperator(main, "Browse").push();
+        
+//        JFrame frame = new JFrame();
+//        
+//        JFileChooser jfc = JFileChooserOperator.findJFileChooser(frame);
+//        assertNotNull(jfc);
+        
     }
 
 }

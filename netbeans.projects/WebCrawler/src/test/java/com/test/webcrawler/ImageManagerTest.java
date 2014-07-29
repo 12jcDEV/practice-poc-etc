@@ -5,13 +5,14 @@
  */
 package com.test.webcrawler;
 
-import com.test.webcrawler.manager.ImageManager;
-import com.test.webcrawler.model.ImageDTO;
+import com.webcrawler.manager.ImageManager;
+import com.webcrawler.model.ImageDTO;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -46,7 +47,7 @@ public class ImageManagerTest extends BaseTest {
     public void tearDown() {
     }
 
-    @Test(expected =  ExecutionException.class)
+    @Test
     public void testGetImageData() throws Exception {
 
         imageManager.setUrl("http://www.imgur.com");

@@ -6,7 +6,7 @@
 
 package com.test.webcrawler;
 
-import com.test.webcrawler.manager.URLManager;
+import com.webcrawler.manager.URLManager;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

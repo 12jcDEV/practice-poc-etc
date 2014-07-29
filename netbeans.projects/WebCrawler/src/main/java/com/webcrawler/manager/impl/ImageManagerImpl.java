@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.test.webcrawler.manager.impl;
+package com.webcrawler.manager.impl;
 
-import com.test.webcrawler.manager.ImageManager;
-import com.test.webcrawler.model.ImageDTO;
+import com.webcrawler.manager.ImageManager;
+import com.webcrawler.model.ImageDTO;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,6 @@ public class ImageManagerImpl implements ImageManager {
         executorService = Executors.newCachedThreadPool();
     }
 
-
     @Override
     public List<ImageDTO> getImageData() throws IOException, IllegalArgumentException, InterruptedException, ExecutionException {
 
@@ -50,10 +49,18 @@ public class ImageManagerImpl implements ImageManager {
             public List<ImageDTO> call() throws Exception {
                 System.out.println("Retrieving image data from url " + url);
 
-                Document document = Jsoup.connect(url).get();
-                Elements media = document.select("[src]");
+                Document document = null;
+                Elements media = null;
+                 List<ImageDTO> images = new ArrayList<ImageDTO>();
+                try {
+                    document = Jsoup.connect(url).get();
+                    media = document.select("[src]");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return images;
+                }
 
-                List<ImageDTO> images = new ArrayList<ImageDTO>();
+               
 
                 System.out.println("# of images: " + media.size());
 
@@ -69,9 +76,9 @@ public class ImageManagerImpl implements ImageManager {
                 return images;
             }
         };
-        
+
         Future<List<ImageDTO>> result = executorService.submit(callable);
-        
+
         return result.get();
 
     }

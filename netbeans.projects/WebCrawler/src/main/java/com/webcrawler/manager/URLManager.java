@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package com.test.webcrawler.manager;
+package com.webcrawler.manager;
 
 /**
  *

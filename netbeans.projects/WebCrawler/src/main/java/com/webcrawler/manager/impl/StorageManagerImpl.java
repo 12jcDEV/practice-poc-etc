@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.test.webcrawler.manager.impl;
+package com.webcrawler.manager.impl;
 
-import com.test.webcrawler.manager.StorageManager;
+import com.webcrawler.manager.StorageManager;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;

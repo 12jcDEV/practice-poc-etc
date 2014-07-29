@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.test.webcrawler.manager.impl;
+package com.webcrawler.manager.impl;
 
-import com.test.webcrawler.WebCrawlerMain;
-import com.test.webcrawler.manager.StorageManager;
-import com.test.webcrawler.model.ImageDTO;
+import com.webcrawler.WebCrawlerMain;
+import com.webcrawler.manager.StorageManager;
+import com.webcrawler.model.ImageDTO;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -49,9 +49,9 @@ public class DownloadTask extends SwingWorker<Void, Integer> {
             throw new IllegalArgumentException("UI is null, assign a UI first");
         }
 
-        if (images == null) {
+        if (images == null || images.size() == 0) {
              cancel(true);
-            throw new IllegalArgumentException("Set the image location first!");
+            throw new IllegalArgumentException("No Images Found!");
         }
 
         InputStream is = null;

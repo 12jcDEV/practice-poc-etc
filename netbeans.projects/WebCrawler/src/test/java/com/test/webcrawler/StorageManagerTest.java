@@ -5,8 +5,8 @@
  */
 package com.test.webcrawler;
 
-import com.test.webcrawler.manager.StorageManager;
-import com.test.webcrawler.manager.impl.StorageManagerImpl;
+import com.webcrawler.manager.StorageManager;
+import com.webcrawler.manager.impl.StorageManagerImpl;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertTrue;
@@ -21,6 +21,8 @@ import org.junit.Test;
 public class StorageManagerTest extends BaseTest {
 
     private StorageManager storageManager;
+    
+    private static final String IMG_URL = "http://www.visitnorwich.co.uk/assets/Uploads/Events-images/_resampled/CroppedImage160122-12.-NMS-Birds-Feathered-Cloche-Hat.jpg";
 
     public StorageManagerTest() {
     }
@@ -46,7 +48,7 @@ public class StorageManagerTest extends BaseTest {
     @Test
     public void testDownloadImagesFromRemote() throws Exception {
 
-        assertTrue(storageManager.downloadImagesFromRemote("http://i.imgur.com/NmliaQE.jpg"));
+        assertTrue(storageManager.downloadImagesFromRemote(IMG_URL));
 
     }
 
