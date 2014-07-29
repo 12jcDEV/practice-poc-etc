@@ -6,7 +6,10 @@
 package com.test.webcrawler;
 
 import com.test.webcrawler.manager.ProcessManager;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
@@ -19,11 +22,13 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * @author jose
  */
 public class WebCrawlerMain extends javax.swing.JFrame {
-
+    
     private ApplicationContext context;
-
+    
     private ProcessManager processManager;
-
+    
+    private JFileChooser fileChooser;
+    
     public static final String DOWNLOAD_TEXT = "Downloading file ";
 
     /**
@@ -33,20 +38,28 @@ public class WebCrawlerMain extends javax.swing.JFrame {
         initComponents();
         initSpringComponents();
         fixComponentVisibility();
+        initInternalComponents();
     }
-
+    
+    public void initInternalComponents() {
+        progBarDownload.setStringPainted(true);
+        fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        fileChooser.setVisible(false);
+        
+    }
+    
     public void setFileInfo(String fileName, int length) {
-
+        
         pnlDownload.setVisible(true);
         lblDownload.setText(DOWNLOAD_TEXT + fileName);
-
+        
     }
-
+    
     private void fixComponentVisibility() {
         pnlDownload.setVisible(false);
-        //fileChooser.setVisible(false);
     }
-
+    
     private void initSpringComponents() {
         context = new ClassPathXmlApplicationContext("applicationContext.xml");
         processManager = (ProcessManager) context.getBean("processManager");
@@ -149,10 +162,14 @@ public class WebCrawlerMain extends javax.swing.JFrame {
 
         lblSaveInDir.setText("Save In Directory:");
 
-        txtFldChooseDir.setText("jTextField1");
         txtFldChooseDir.setEnabled(false);
 
         btnBrowseDir.setText("Browse");
+        btnBrowseDir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBrowseDirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlChooseDirectoryLayout = new javax.swing.GroupLayout(pnlChooseDirectory);
         pnlChooseDirectory.setLayout(pnlChooseDirectoryLayout);
@@ -220,20 +237,21 @@ public class WebCrawlerMain extends javax.swing.JFrame {
 
 
     private void btnDownloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDownloadActionPerformed
-
+        
         disableSearching();
         processManager.processDownload(txtURL.getText(), null);
 
     }//GEN-LAST:event_btnDownloadActionPerformed
-
+    
     public void disableSearching() {
         btnDownload.setEnabled(false);
         txtURL.setEditable(false);
         txtURL.setEnabled(false);
     }
-
+    
     public void enableSearching() {
         btnDownload.setEnabled(true);
+        txtURL.setText("");
         txtURL.setEditable(true);
         txtURL.setEnabled(true);
         progBarDownload.setValue(0);
@@ -243,6 +261,18 @@ public class WebCrawlerMain extends javax.swing.JFrame {
     private void txtURLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtURLActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtURLActionPerformed
+
+    private void btnBrowseDirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBrowseDirActionPerformed
+        
+        fileChooser.setVisible(true);
+        int returnVal = fileChooser.showOpenDialog(this);
+        
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            txtFldChooseDir.setText(fileChooser.getSelectedFile().getAbsolutePath());
+            processManager.setFolderLoc(fileChooser.getSelectedFile().getAbsolutePath());
+        }
+        
+    }//GEN-LAST:event_btnBrowseDirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -297,73 +327,73 @@ public class WebCrawlerMain extends javax.swing.JFrame {
     public ApplicationContext getContext() {
         return context;
     }
-
+    
     public void setContext(ApplicationContext context) {
         this.context = context;
     }
-
+    
     public ProcessManager getProcessManager() {
         return processManager;
     }
-
+    
     public void setProcessManager(ProcessManager processManager) {
         this.processManager = processManager;
     }
-
+    
     public JButton getBtnDownload() {
         return btnDownload;
     }
-
+    
     public void setBtnDownload(JButton btnDownload) {
         this.btnDownload = btnDownload;
     }
-
+    
     public JLabel getjLabel1() {
         return lblEnterURL;
     }
-
+    
     public void setjLabel1(JLabel jLabel1) {
         this.lblEnterURL = jLabel1;
     }
-
+    
     public JTextField getTxtURL() {
         return txtURL;
     }
-
+    
     public void setTxtURL(JTextField txtURL) {
         this.txtURL = txtURL;
     }
-
+    
     public JLabel getLblDownload() {
         return lblDownload;
     }
-
+    
     public void setLblDownload(JLabel lblDownload) {
         this.lblDownload = lblDownload;
     }
-
+    
     public JLabel getLblEnterURL() {
         return lblEnterURL;
     }
-
+    
     public void setLblEnterURL(JLabel lblEnterURL) {
         this.lblEnterURL = lblEnterURL;
     }
-
+    
     public JPanel getPnlDownload() {
         return pnlDownload;
     }
-
+    
     public void setPnlDownload(JPanel pnlDownload) {
         this.pnlDownload = pnlDownload;
     }
-
+    
     public JProgressBar getProgBarDownload() {
         return progBarDownload;
     }
-
+    
     public void setProgBarDownload(JProgressBar progBarDownload) {
         this.progBarDownload = progBarDownload;
     }
-
+    
 }

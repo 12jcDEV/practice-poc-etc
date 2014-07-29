@@ -219,7 +219,6 @@
             </Component>
             <Component class="javax.swing.JTextField" name="txtFldChooseDir">
               <Properties>
-                <Property name="text" type="java.lang.String" value="jTextField1"/>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
             </Component>
@@ -227,6 +226,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Browse"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBrowseDirActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
