@@ -15,7 +15,7 @@ import java.io.InputStream;
  */
 public interface StorageManager {
 
-    public void downloadImagesFromRemote(String imageURL) throws IOException;
+    public boolean downloadImagesFromRemote(String imageURL) throws IOException;
 
      public void disconnect() throws IOException;
      
