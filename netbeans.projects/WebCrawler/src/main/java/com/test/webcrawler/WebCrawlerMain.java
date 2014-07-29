@@ -11,9 +11,11 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JTextField;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -238,10 +240,20 @@ public class WebCrawlerMain extends javax.swing.JFrame {
 
     private void btnDownloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDownloadActionPerformed
 
-        disableSearching();
-        processManager.processDownload(txtURL.getText(), fileChooser.getSelectedFile().getAbsolutePath());
-
+        if (fileChooser.getSelectedFile() == null) {
+            showFileSelectionErrorDialog();
+        } else if (StringUtils.isEmpty(fileChooser.getSelectedFile().getAbsolutePath())) {
+            showFileSelectionErrorDialog();
+        } else {
+            disableSearching();
+            processManager.processDownload(txtURL.getText(), fileChooser.getSelectedFile().getAbsolutePath());
+        }
     }//GEN-LAST:event_btnDownloadActionPerformed
+
+    private void showFileSelectionErrorDialog() {
+        JOptionPane.showMessageDialog(this, "Select a folder first",
+                "Error", JOptionPane.ERROR_MESSAGE);
+    }
 
     public void disableSearching() {
         btnDownload.setEnabled(false);
