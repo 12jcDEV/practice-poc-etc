@@ -5,6 +5,7 @@
  */
 package com.test.webcrawler.manager.impl;
 
+import com.test.webcrawler.WebCrawlerMain;
 import com.test.webcrawler.manager.ImageManager;
 import com.test.webcrawler.manager.ProcessManager;
 import com.test.webcrawler.manager.StorageManager;
@@ -36,7 +37,7 @@ public class ProcessManagerImpl implements ProcessManager {
     @Autowired
     private StorageManager storageManager;
     
-    private Component parentComponent;
+    private WebCrawlerMain parentComponent;
     
     private ExecutorService executorService;
 
@@ -72,7 +73,7 @@ public class ProcessManagerImpl implements ProcessManager {
         return parentComponent;
     }
 
-    public void setParentComponent(Component parentComponent) {
+    public void setParentComponent(WebCrawlerMain parentComponent) {
         this.parentComponent = parentComponent;
     }
     

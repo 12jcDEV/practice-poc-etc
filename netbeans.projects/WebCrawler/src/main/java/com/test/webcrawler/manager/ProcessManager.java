@@ -6,8 +6,8 @@
 
 package com.test.webcrawler.manager;
 
+import com.test.webcrawler.WebCrawlerMain;
 import com.test.webcrawler.model.ResultDTO;
-import java.awt.Component;
 
 /**
  *
@@ -16,6 +16,6 @@ import java.awt.Component;
 public interface ProcessManager {
 
     public ResultDTO processDownload(String url, String folderLocation);
-    public void setParentComponent(Component parentComponent);
+    public void setParentComponent(WebCrawlerMain parentComponent);
     
 }

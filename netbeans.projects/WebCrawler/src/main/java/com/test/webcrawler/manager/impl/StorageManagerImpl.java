@@ -40,6 +40,7 @@ public class StorageManagerImpl implements StorageManager {
                 stopWatch.start();
                 url = new URL(dto.getUrlAddress());
                 in = url.openStream();
+                //System.out.println("File Size: " + url.);
 
                 out = new BufferedOutputStream(new FileOutputStream(folderPath + "/" + dto.getFileName()));
                 for (int b; (b = in.read()) != -1;) {
