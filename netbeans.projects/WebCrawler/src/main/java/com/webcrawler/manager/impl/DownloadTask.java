@@ -78,8 +78,8 @@ public class DownloadTask extends SwingWorker<Void, Integer> {
                     totalBytesRead += bytesRead;
                     percentCompleted = (int) (totalBytesRead * 100 / storageManager.getContentLength());
 
-                    setProgress(percentCompleted);
-
+                    //setProgress(percentCompleted);
+                     publish(percentCompleted);
                 }
 
                 fos.close();
@@ -91,7 +91,7 @@ public class DownloadTask extends SwingWorker<Void, Integer> {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(ui, "Error downloading image: " + ex.getMessage(),
                     "Error", JOptionPane.ERROR_MESSAGE);
-            setProgress(0);
+            publish(0);
             cancel(true);
         }
 
