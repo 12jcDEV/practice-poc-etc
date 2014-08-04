@@ -70,6 +70,11 @@ public class ProcessManagerImpl implements ProcessManager, PropertyChangeListene
                     @Override
                     public void propertyChange(PropertyChangeEvent evt) {
 
+                        if (evt.getPropertyName().equals("progress")) {
+
+                            int progress = (Integer) evt.getNewValue();
+                            ProcessManagerImpl.this.parentComponent.getProgBarDownload().setValue(progress);
+                        }
                     }
                 });
                 parentComponent.getProgBarDownload().setValue(0);
