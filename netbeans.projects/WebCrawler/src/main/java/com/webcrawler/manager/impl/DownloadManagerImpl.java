@@ -79,13 +79,21 @@ public class DownloadManagerImpl implements DownloadManager {
 
             try {
 
-                for (ImageDTO dto : images) {
-                    System.out.println("Retrieving file " + dto.getFileName());
+                imagetraverse: for (ImageDTO dto : images) {
+                    System.out.println("Retrieving file " + dto.getUrlAddress());
                     storageManager.downloadImagesFromRemote(dto.getUrlAddress());
                     ui.setFileInfo(dto.getFileName(), storageManager.getContentLength());
 
                     is = storageManager.getInputStream();
-                    fos = new FileOutputStream(folderLocation + File.separator + dto.getFileName());
+                    
+                    try {
+                     fos = new FileOutputStream(folderLocation + File.separator + dto.getFileName());
+                    } catch(IOException ie) {
+                        ie.printStackTrace();
+                        System.out.println("Error with the file "+ dto.getFileName() +" skipping this file....");
+                        break imagetraverse;
+                    }
+                   
                     buffer = new byte[BUFFER_SIZE];
                     int bytesRead = -1;
                     int totalBytesRead = 0;
@@ -138,7 +146,6 @@ public class DownloadManagerImpl implements DownloadManager {
         @Override
         protected void process(List<Integer> chunks) {
             for (Integer chunk : chunks) {
-                System.out.println("The chuck is " + chunk);
                 ui.getProgBarDownload().setValue(chunk);
             }
         }

@@ -50,16 +50,24 @@ public class ImageManagerTest extends BaseTest {
     @Test
     public void testGetImageData() throws Exception {
 
-        imageManager.setUrl("http://www.imgur.com");
-        List<ImageDTO> images = imageManager.getImageData();
+        List<ImageDTO> images = imageManager.getImageData("http://www.imgur.com");
         assertNotNull(images);
         assertTrue(images.size() > 0);
 
-        imageManager.setUrl("blablablalb");
-        images = imageManager.getImageData();
+        images = imageManager.getImageData("blablablalb");
         assertNotNull(images);
         assertTrue(images.size() == 0);
 
+        
+        //test with non existent url
+        images = imageManager.getImageData("http://www.sdfuiohsadfiouhasdfuhadiufsahfd.com");
+        assertNotNull(images);
+        assertTrue(images.isEmpty());
+        
+        //test with problematic headers
+        images = imageManager.getImageData("http://www.theverge.com");
+        assertNotNull(images);
+        assertTrue(!images.isEmpty());
     }
 
 }

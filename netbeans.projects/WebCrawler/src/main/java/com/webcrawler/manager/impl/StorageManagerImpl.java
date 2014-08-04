@@ -11,11 +11,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author jose
  */
+@Service("storageManager")
 public class StorageManagerImpl implements StorageManager {
 
     private String folderPath;
@@ -23,7 +25,7 @@ public class StorageManagerImpl implements StorageManager {
     private HttpURLConnection httpConnection;
 
     private InputStream inputStream;
-    
+
     private int contentLength;
 
     @Override
@@ -63,6 +65,5 @@ public class StorageManagerImpl implements StorageManager {
     public int getContentLength() {
         return contentLength;
     }
-    
-   
+
 }

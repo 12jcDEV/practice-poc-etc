@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.webcrawler.manager;
 
 import com.webcrawler.model.ImageDTO;
@@ -17,8 +16,6 @@ import java.util.concurrent.ExecutionException;
  */
 public interface ImageManager {
 
-    public List<ImageDTO> getImageData() throws IOException, IllegalArgumentException,  InterruptedException, ExecutionException;
-    
-    public void setUrl(String url);
+    public List<ImageDTO> getImageData(String url) throws IOException, IllegalArgumentException, InterruptedException, ExecutionException;
     
 }

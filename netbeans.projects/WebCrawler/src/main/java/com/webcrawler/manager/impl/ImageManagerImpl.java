@@ -28,8 +28,6 @@ import org.springframework.stereotype.Service;
 @Service("imageManager")
 public class ImageManagerImpl implements ImageManager {
 
-    private String url;
-
     private ExecutorService executorService;
 
     public ImageManagerImpl() {
@@ -37,7 +35,7 @@ public class ImageManagerImpl implements ImageManager {
     }
 
     @Override
-    public List<ImageDTO> getImageData() throws IOException, IllegalArgumentException, InterruptedException, ExecutionException {
+    public List<ImageDTO> getImageData(final String url) throws IOException, IllegalArgumentException, InterruptedException, ExecutionException {
 
         if (url == null || url.equals("")) {
             throw new IllegalArgumentException("Set URL first");
@@ -94,14 +92,6 @@ public class ImageManagerImpl implements ImageManager {
         String name = longName.substring(indexname + 1, longName.length());
 
         return name;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 
 }

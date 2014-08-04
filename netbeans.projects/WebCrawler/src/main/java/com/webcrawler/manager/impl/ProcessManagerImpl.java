@@ -6,6 +6,7 @@
 package com.webcrawler.manager.impl;
 
 import com.webcrawler.WebCrawlerMain;
+import com.webcrawler.manager.DownloadManager;
 import com.webcrawler.manager.ImageManager;
 import com.webcrawler.manager.ProcessManager;
 import com.webcrawler.manager.URLManager;
@@ -15,7 +16,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
 import javax.swing.JOptionPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,11 +33,10 @@ public class ProcessManagerImpl implements ProcessManager, PropertyChangeListene
     @Autowired
     private ImageManager imageManager;
 
-    private DownloadTask downloadTask;
+    @Autowired
+    private DownloadManager downloadManager;
 
     private WebCrawlerMain parentComponent;
-
-    private ExecutorService executorService;
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
@@ -57,29 +56,8 @@ public class ProcessManagerImpl implements ProcessManager, PropertyChangeListene
         if (uRLManager.validateURL(url)) {
 
             try {
-                imageManager.setUrl(url);
-
-                downloadTask = new DownloadTask(new StorageManagerImpl());
-
-                downloadTask.setDownloadFolder(folderLocation);
-                downloadTask.setImages(imageManager.getImageData());
-                downloadTask.setUi(parentComponent);
-
-                downloadTask.addPropertyChangeListener(new PropertyChangeListener() {
-
-                    @Override
-                    public void propertyChange(PropertyChangeEvent evt) {
-
-                        if (evt.getPropertyName().equals("progress")) {
-
-                            int progress = (Integer) evt.getNewValue();
-                            ProcessManagerImpl.this.parentComponent.getProgBarDownload().setValue(progress);
-                        }
-                    }
-                });
                 parentComponent.getProgBarDownload().setValue(0);
-                downloadTask.execute();
-
+                downloadManager.processDownload(folderLocation, imageManager.getImageData(url), parentComponent, this);
             } catch (IOException ex) {
                 ex.printStackTrace();
             } catch (IllegalArgumentException ex) {
