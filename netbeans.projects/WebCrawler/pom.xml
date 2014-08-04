@@ -59,5 +59,10 @@
             <artifactId>jemmy</artifactId>
             <version>2.2.7.5</version>
         </dependency>
+        <dependency>
+            <groupId>com.googlecode.jmockit</groupId>
+            <artifactId>jmockit</artifactId>
+            <version>1.7</version>
+        </dependency>
     </dependencies>
 </project>

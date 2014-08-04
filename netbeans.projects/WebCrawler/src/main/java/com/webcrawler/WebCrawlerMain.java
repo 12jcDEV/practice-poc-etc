@@ -267,6 +267,12 @@ public class WebCrawlerMain extends javax.swing.JFrame {
         progBarDownload.setValue(0);
         pnlDownload.setVisible(false);
     }
+    
+    public void resetProgressBar() {
+    
+        progBarDownload.setValue(0);
+    
+    }
 
     private void txtURLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtURLActionPerformed
         // TODO add your handling code here:

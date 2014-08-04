@@ -34,6 +34,7 @@ public class DownloadManagerImpl implements DownloadManager {
     private String folderLocation;
     private List<ImageDTO> images;
     private WebCrawlerMain ui;
+    private ImageDownloaderTask task;
 
     @Override
     public void processDownload(String folderLocation, List<ImageDTO> images, WebCrawlerMain ui, PropertyChangeListener listener) throws Exception {
@@ -42,9 +43,9 @@ public class DownloadManagerImpl implements DownloadManager {
         this.images = images;
         this.ui = ui;
 
-        ImageDownloaderTask task = new ImageDownloaderTask();
+        task = new ImageDownloaderTask();
         task.addPropertyChangeListener(listener);
-
+        
         task.execute();
 
     }
@@ -72,7 +73,14 @@ public class DownloadManagerImpl implements DownloadManager {
                 cancel(true);
                 throw new IllegalArgumentException("No Images Found!");
             }
-
+            
+            //check if folder exists
+            File path = new File(folderLocation);
+            if(!path.exists() || !path.isDirectory()) {
+                throw new IllegalArgumentException("Folder location does not exist!");
+            }
+            
+            
             InputStream is = null;
             FileOutputStream fos = null;
             byte[] buffer = null;
@@ -105,7 +113,6 @@ public class DownloadManagerImpl implements DownloadManager {
                         totalBytesRead += bytesRead;
                         percentCompleted = (int) (totalBytesRead * 100 / storageManager.getContentLength());
 
-                        //setProgress(percentCompleted);
                         publish(percentCompleted);
                     }
 
@@ -149,7 +156,5 @@ public class DownloadManagerImpl implements DownloadManager {
                 ui.getProgBarDownload().setValue(chunk);
             }
         }
-
     }
-
 }

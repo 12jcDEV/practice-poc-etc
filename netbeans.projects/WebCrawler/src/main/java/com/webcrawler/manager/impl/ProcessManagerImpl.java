@@ -56,7 +56,7 @@ public class ProcessManagerImpl implements ProcessManager, PropertyChangeListene
         if (uRLManager.validateURL(url)) {
 
             try {
-                parentComponent.getProgBarDownload().setValue(0);
+                parentComponent.resetProgressBar();
                 downloadManager.processDownload(folderLocation, imageManager.getImageData(url), parentComponent, this);
             } catch (IOException ex) {
                 ex.printStackTrace();

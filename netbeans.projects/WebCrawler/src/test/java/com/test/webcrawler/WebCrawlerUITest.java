@@ -5,14 +5,19 @@
  */
 package com.test.webcrawler;
 
+import com.webcrawler.WebCrawlerMain;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.netbeans.jemmy.ClassReference;
 import org.netbeans.jemmy.operators.JButtonOperator;
 import org.netbeans.jemmy.operators.JDialogOperator;
+import org.netbeans.jemmy.operators.JFileChooserOperator;
 import org.netbeans.jemmy.operators.JFrameOperator;
 import org.netbeans.jemmy.operators.JTextFieldOperator;
 
@@ -60,6 +65,18 @@ public class WebCrawlerUITest {
         new JDialogOperator(main, "Error");
 
     }
+    
+    @Test
+    public void testPressDownloadNoSelectLocation() throws Exception {
+    
+        new ClassReference(WEB_CRAWLER_MAIN_PACKAGE).startApplication();
+
+        main = new JFrameOperator(IMAGE_DOWNLOADER);
+         new JTextFieldOperator(main, 0).setText("http://www.imgur.com");
+        new JButtonOperator(main, "Download Images!").push();
+        new JDialogOperator(main, "Error");
+    
+    }
 
     @Test
     public void testEnterURL() throws Exception {
@@ -81,10 +98,8 @@ public class WebCrawlerUITest {
         main = new JFrameOperator(IMAGE_DOWNLOADER);
         new JButtonOperator(main, "Browse").push();
         
-//        JFrame frame = new JFrame();
-//        
-//        JFileChooser jfc = JFileChooserOperator.findJFileChooser(frame);
-//        assertNotNull(jfc);
+        JFileChooserOperator.findJFileChooser(main.getContentPane());
+        //assertNotNull(jfc);
         
     }
 
