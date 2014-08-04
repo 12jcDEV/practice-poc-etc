@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
  * @author jose
  */
 @Service("processManager")
-public class ProcessManagerImpl implements ProcessManager {
+public class ProcessManagerImpl implements ProcessManager, PropertyChangeListener {
 
     @Autowired
     private URLManager uRLManager;
@@ -38,6 +38,17 @@ public class ProcessManagerImpl implements ProcessManager {
     private WebCrawlerMain parentComponent;
 
     private ExecutorService executorService;
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+
+        if (evt.getPropertyName().equals("progress")) {
+
+            int progress = (Integer) evt.getNewValue();
+            this.parentComponent.getProgBarDownload().setValue(progress);
+        }
+
+    }
 
     @Override
     public ResultDTO processDownload(String url, String folderLocation) {
@@ -58,12 +69,6 @@ public class ProcessManagerImpl implements ProcessManager {
 
                     @Override
                     public void propertyChange(PropertyChangeEvent evt) {
-
-                        if (evt.getPropertyName().equals("progress")) {
-
-                            int progress = (Integer) evt.getNewValue();
-                            ProcessManagerImpl.this.parentComponent.getProgBarDownload().setValue(progress);
-                        }
 
                     }
                 });
