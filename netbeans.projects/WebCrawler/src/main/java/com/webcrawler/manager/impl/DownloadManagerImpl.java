@@ -5,9 +5,9 @@
  */
 package com.webcrawler.manager.impl;
 
-import com.webcrawler.WebCrawlerMain;
 import com.webcrawler.manager.DownloadManager;
 import com.webcrawler.manager.StorageManager;
+import com.webcrawler.manager.UIManager;
 import com.webcrawler.model.ImageDTO;
 import java.beans.PropertyChangeListener;
 import java.io.File;
@@ -15,7 +15,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +32,11 @@ public class DownloadManagerImpl implements DownloadManager {
 
     private String folderLocation;
     private List<ImageDTO> images;
-    private WebCrawlerMain ui;
+    private UIManager ui;
     private ImageDownloaderTask task;
 
     @Override
-    public void processDownload(String folderLocation, List<ImageDTO> images, WebCrawlerMain ui, PropertyChangeListener listener) throws Exception {
+    public void processDownload(String folderLocation, List<ImageDTO> images, UIManager ui, PropertyChangeListener listener) throws Exception {
 
         this.folderLocation = folderLocation;
         this.images = images;
@@ -45,7 +44,7 @@ public class DownloadManagerImpl implements DownloadManager {
 
         task = new ImageDownloaderTask();
         task.addPropertyChangeListener(listener);
-        
+
         task.execute();
 
     }
@@ -73,35 +72,35 @@ public class DownloadManagerImpl implements DownloadManager {
                 cancel(true);
                 throw new IllegalArgumentException("No Images Found!");
             }
-            
+
             //check if folder exists
             File path = new File(folderLocation);
-            if(!path.exists() || !path.isDirectory()) {
+            if (!path.exists() || !path.isDirectory()) {
                 throw new IllegalArgumentException("Folder location does not exist!");
             }
-            
-            
+
             InputStream is = null;
             FileOutputStream fos = null;
             byte[] buffer = null;
 
             try {
 
-                imagetraverse: for (ImageDTO dto : images) {
+                imagetraverse:
+                for (ImageDTO dto : images) {
                     System.out.println("Retrieving file " + dto.getUrlAddress());
                     storageManager.downloadImagesFromRemote(dto.getUrlAddress());
-                    ui.setFileInfo(dto.getFileName(), storageManager.getContentLength());
+                    ui.setUIFileInfo(dto.getFileName(), storageManager.getContentLength());
 
                     is = storageManager.getInputStream();
-                    
+
                     try {
-                     fos = new FileOutputStream(folderLocation + File.separator + dto.getFileName());
-                    } catch(IOException ie) {
+                        fos = new FileOutputStream(folderLocation + File.separator + dto.getFileName());
+                    } catch (IOException ie) {
                         ie.printStackTrace();
-                        System.out.println("Error with the file "+ dto.getFileName() +" skipping this file....");
+                        System.out.println("Error with the file " + dto.getFileName() + " skipping this file....");
                         break imagetraverse;
                     }
-                   
+
                     buffer = new byte[BUFFER_SIZE];
                     int bytesRead = -1;
                     int totalBytesRead = 0;
@@ -123,8 +122,8 @@ public class DownloadManagerImpl implements DownloadManager {
             } catch (IOException ex) {
 
                 ex.printStackTrace();
-                JOptionPane.showMessageDialog(ui, "Error downloading image: " + ex.getMessage(),
-                        "Error", JOptionPane.ERROR_MESSAGE);
+                ui.showErrorMessageDialog("Error downloading image: " + ex.getMessage(), "Error");
+
                 publish(0);
                 cancel(true);
             }
@@ -137,14 +136,10 @@ public class DownloadManagerImpl implements DownloadManager {
 
             if (isCancelled()) {
 
-                JOptionPane.showMessageDialog(ui,
-                        "Download Failed!!", "Message",
-                        JOptionPane.ERROR_MESSAGE);
+                ui.showErrorMessageDialog("Download Failed!", "Error");
             } else {
 
-                JOptionPane.showMessageDialog(ui,
-                        "Images have been downloaded successfully!", "Message",
-                        JOptionPane.INFORMATION_MESSAGE);
+                ui.showMessageDialog("Images have been downloaded successfully!", "Success!");
             }
 
             ui.enableSearching();
@@ -153,7 +148,7 @@ public class DownloadManagerImpl implements DownloadManager {
         @Override
         protected void process(List<Integer> chunks) {
             for (Integer chunk : chunks) {
-                ui.getProgBarDownload().setValue(chunk);
+                ui.setProgressBarValue(chunk);
             }
         }
     }
