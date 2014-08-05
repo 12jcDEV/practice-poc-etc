@@ -6,7 +6,6 @@
 
 package com.webcrawler.manager;
 
-import com.webcrawler.WebCrawlerMain;
 import com.webcrawler.model.ImageDTO;
 import java.beans.PropertyChangeListener;
 import java.util.List;
@@ -17,5 +16,5 @@ import java.util.List;
  */
 public interface DownloadManager {
     
-    public void processDownload(String folderLocation, List<ImageDTO> images, WebCrawlerMain ui, PropertyChangeListener listener) throws Exception;
+    public void processDownload(String folderLocation, List<ImageDTO> images, UIManager ui) throws Exception;
 }

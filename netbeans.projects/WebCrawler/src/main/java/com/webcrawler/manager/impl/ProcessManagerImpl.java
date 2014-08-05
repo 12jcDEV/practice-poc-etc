@@ -5,18 +5,16 @@
  */
 package com.webcrawler.manager.impl;
 
-import com.webcrawler.WebCrawlerMain;
 import com.webcrawler.manager.DownloadManager;
 import com.webcrawler.manager.ImageManager;
 import com.webcrawler.manager.ProcessManager;
+import com.webcrawler.manager.UIManager;
 import com.webcrawler.manager.URLManager;
 import com.webcrawler.model.ResultDTO;
-import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
-import javax.swing.JOptionPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,15 +34,13 @@ public class ProcessManagerImpl implements ProcessManager, PropertyChangeListene
     @Autowired
     private DownloadManager downloadManager;
 
-    private WebCrawlerMain parentComponent;
+    private UIManager parentComponent;
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
 
         if (evt.getPropertyName().equals("progress")) {
-
-            int progress = (Integer) evt.getNewValue();
-            this.parentComponent.getProgBarDownload().setValue(progress);
+            this.parentComponent.setProgressBarValue((Integer) evt.getNewValue());
         }
 
     }
@@ -57,7 +53,7 @@ public class ProcessManagerImpl implements ProcessManager, PropertyChangeListene
 
             try {
                 parentComponent.resetProgressBar();
-                downloadManager.processDownload(folderLocation, imageManager.getImageData(url), parentComponent, this);
+                downloadManager.processDownload(folderLocation, imageManager.getImageData(url), parentComponent);
             } catch (IOException ex) {
                 ex.printStackTrace();
             } catch (IllegalArgumentException ex) {
@@ -71,8 +67,7 @@ public class ProcessManagerImpl implements ProcessManager, PropertyChangeListene
             }
 
         } else {
-            JOptionPane.showMessageDialog(parentComponent, "Invalid URL, please enter a valid URL");
-
+            parentComponent.showErrorMessageDialog("Invalid URL, please enter a valid URL", "Error");
         }
 
         parentComponent.enableSearching();
@@ -80,11 +75,11 @@ public class ProcessManagerImpl implements ProcessManager, PropertyChangeListene
         return null;
     }
 
-    public Component getParentComponent() {
+    public UIManager getParentComponent() {
         return parentComponent;
     }
 
-    public void setParentComponent(WebCrawlerMain parentComponent) {
+    public void setParentComponent(UIManager parentComponent) {
         this.parentComponent = parentComponent;
     }
 

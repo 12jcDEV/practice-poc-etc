@@ -5,12 +5,8 @@
  */
 package com.test.webcrawler;
 
-import com.webcrawler.WebCrawlerMain;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import org.junit.After;
 import org.junit.AfterClass;
-import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;

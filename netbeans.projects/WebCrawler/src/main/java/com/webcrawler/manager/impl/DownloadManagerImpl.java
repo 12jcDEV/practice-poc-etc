@@ -9,6 +9,7 @@ import com.webcrawler.manager.DownloadManager;
 import com.webcrawler.manager.StorageManager;
 import com.webcrawler.manager.UIManager;
 import com.webcrawler.model.ImageDTO;
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -25,7 +26,7 @@ import org.springframework.stereotype.Service;
  * @author jose
  */
 @Service("downloadManager")
-public class DownloadManagerImpl implements DownloadManager {
+public class DownloadManagerImpl implements DownloadManager, PropertyChangeListener {
 
     @Autowired
     private StorageManager storageManager;
@@ -36,14 +37,41 @@ public class DownloadManagerImpl implements DownloadManager {
     private ImageDownloaderTask task;
 
     @Override
-    public void processDownload(String folderLocation, List<ImageDTO> images, UIManager ui, PropertyChangeListener listener) throws Exception {
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (evt.getPropertyName().equals("progress")) {
+            ui.setProgressBarValue((Integer) evt.getNewValue());
+        }
+
+    }
+
+    @Override
+    public void processDownload(String folderLocation, List<ImageDTO> images, UIManager ui) throws Exception {
+
+        if (StringUtils.isBlank(folderLocation)) {
+            throw new IllegalArgumentException("set download folder first");
+        }
+
+        if (ui == null) {
+            System.out.println("UI is null, assign a UI first");
+            throw new IllegalArgumentException("UI is null, assign a UI first");
+        }
+
+        if (images == null || images.isEmpty()) {
+            throw new IllegalArgumentException("No Images Found!");
+        }
+
+        //check if folder exists
+        File path = new File(folderLocation);
+        if (!path.exists() || !path.isDirectory()) {
+            throw new IllegalArgumentException("Folder location does not exist!");
+        }
 
         this.folderLocation = folderLocation;
         this.images = images;
         this.ui = ui;
 
         task = new ImageDownloaderTask();
-        task.addPropertyChangeListener(listener);
+        task.addPropertyChangeListener(this);
 
         task.execute();
 
@@ -58,27 +86,6 @@ public class DownloadManagerImpl implements DownloadManager {
 
             System.out.println("Calling doInBackground...");
 
-            if (StringUtils.isBlank(folderLocation)) {
-                cancel(true);
-                throw new IllegalArgumentException("set download folder first");
-            }
-
-            if (ui == null) {
-                cancel(true);
-                throw new IllegalArgumentException("UI is null, assign a UI first");
-            }
-
-            if (images == null || images.isEmpty()) {
-                cancel(true);
-                throw new IllegalArgumentException("No Images Found!");
-            }
-
-            //check if folder exists
-            File path = new File(folderLocation);
-            if (!path.exists() || !path.isDirectory()) {
-                throw new IllegalArgumentException("Folder location does not exist!");
-            }
-
             InputStream is = null;
             FileOutputStream fos = null;
             byte[] buffer = null;
@@ -88,7 +95,15 @@ public class DownloadManagerImpl implements DownloadManager {
                 imagetraverse:
                 for (ImageDTO dto : images) {
                     System.out.println("Retrieving file " + dto.getUrlAddress());
-                    storageManager.downloadImagesFromRemote(dto.getUrlAddress());
+                    
+                    try {
+                        storageManager.downloadImagesFromRemote(dto.getUrlAddress());
+                    } catch(IOException ioe) {
+                        System.out.println("Cannot download file with url " + dto.getUrlAddress());
+                        System.out.println("Skipping...");
+                        ioe.printStackTrace();
+                        break imagetraverse;
+                    }
                     ui.setUIFileInfo(dto.getFileName(), storageManager.getContentLength());
 
                     is = storageManager.getInputStream();
@@ -126,6 +141,7 @@ public class DownloadManagerImpl implements DownloadManager {
 
                 publish(0);
                 cancel(true);
+                throw ex;
             }
 
             return null;

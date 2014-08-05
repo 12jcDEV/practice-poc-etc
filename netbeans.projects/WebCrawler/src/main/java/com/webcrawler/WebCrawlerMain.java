@@ -6,6 +6,7 @@
 package com.webcrawler;
 
 import com.webcrawler.manager.ProcessManager;
+import com.webcrawler.manager.UIManager;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -21,7 +22,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  *
  * @author jose
  */
-public class WebCrawlerMain extends javax.swing.JFrame {
+public class WebCrawlerMain extends javax.swing.JFrame implements UIManager {
 
     private ApplicationContext context;
 
@@ -41,18 +42,37 @@ public class WebCrawlerMain extends javax.swing.JFrame {
         initInternalComponents();
     }
 
+    @Override
+    public void setProgressBarValue(int val) {
+        progBarDownload.setValue(val);
+    }
+
+    @Override
+    public void showMessageDialog(String message, String dialogHeader) {
+        JOptionPane.showMessageDialog(this,
+                message, dialogHeader,
+                JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    @Override
+    public void showErrorMessageDialog(String message, String dialogHeader) {
+        JOptionPane.showMessageDialog(this,
+                message, dialogHeader,
+                JOptionPane.ERROR_MESSAGE);
+    }
+
+    @Override
+    public void setUIFileInfo(String fileName, int length) {
+
+        pnlDownload.setVisible(true);
+        lblDownload.setText(DOWNLOAD_TEXT + fileName);
+    }
+
     public void initInternalComponents() {
         progBarDownload.setStringPainted(true);
         fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         fileChooser.setVisible(false);
-
-    }
-
-    public void setFileInfo(String fileName, int length) {
-
-        pnlDownload.setVisible(true);
-        lblDownload.setText(DOWNLOAD_TEXT + fileName);
 
     }
 
@@ -267,11 +287,11 @@ public class WebCrawlerMain extends javax.swing.JFrame {
         progBarDownload.setValue(0);
         pnlDownload.setVisible(false);
     }
-    
+
     public void resetProgressBar() {
-    
+
         progBarDownload.setValue(0);
-    
+
     }
 
     private void txtURLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtURLActionPerformed

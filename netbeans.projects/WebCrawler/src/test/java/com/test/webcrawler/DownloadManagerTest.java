@@ -3,13 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.test.webcrawler;
 
-import com.webcrawler.WebCrawlerMain;
 import com.webcrawler.manager.DownloadManager;
 import com.webcrawler.manager.ImageManager;
 import com.webcrawler.manager.StorageManager;
+import com.webcrawler.manager.UIManager;
+import mockit.Mocked;
+import mockit.NonStrictExpectations;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -22,46 +23,61 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author jose
  */
 public class DownloadManagerTest extends BaseTest {
-    
-    @Autowired
-    private StorageManager storageManager;
-    
+
+    private static final String URL = "http://www.stableapps.com";
+
+    private static final String FOLDER_LOC = "/home/jose/CrapHole";
+
     @Autowired
     private ImageManager imageManager;
-    
+
     @Autowired
     private DownloadManager downloadManager;
-    
-    private WebCrawlerMain ui;
-    
-    private static final String FOLDER_LOC = "/home/jose/Desktop/crap/thevergeisdead";
-    
+
+    @Mocked
+    UIManager ui;
+
     public DownloadManagerTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
-        ui = new WebCrawlerMain();
     }
-    
+
     @After
     public void tearDown() {
-        ui = null;
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testUINull() throws Exception {
+
+        downloadManager.processDownload(FOLDER_LOC, imageManager.getImageData(URL), null);
+
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testFolderLocEmpty() throws Exception {
+
+        downloadManager.processDownload("", imageManager.getImageData(URL), ui);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testImageEmpty() throws Exception {
+    downloadManager.processDownload(FOLDER_LOC,null, ui);
     }
     
-    @Test
-    public void testProcessDownload() throws Exception {
+    public void testDownload() throws Exception {
     
-       // downloadManager.processDownload(FOLDER_LOC,imageManager.getImageData(FOLDER_LOC), );
-        
+        downloadManager.processDownload(URL, imageManager.getImageData(URL), ui);
+    
     }
 
 }

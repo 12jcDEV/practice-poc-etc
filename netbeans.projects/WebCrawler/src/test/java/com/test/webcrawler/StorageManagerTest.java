@@ -7,6 +7,7 @@ package com.test.webcrawler;
 
 import com.webcrawler.manager.StorageManager;
 import com.webcrawler.manager.impl.StorageManagerImpl;
+import java.io.IOException;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertTrue;
@@ -51,5 +52,17 @@ public class StorageManagerTest extends BaseTest {
         assertTrue(storageManager.downloadImagesFromRemote(IMG_URL));
 
     }
+    
+    @Test(expected = IOException.class)
+    public void testErrorUrl() throws Exception {
+    
+        assertTrue(storageManager.downloadImagesFromRemote("qwdwqdwqdwqdwqdqw"));
+    }
+    
+    @Test(expected = IOException.class) 
+    public void testURLNonExistent() throws Exception {
+        assertTrue(storageManager.downloadImagesFromRemote("http://wwwqwdwqdwqdwqdwqdqw.com/image.jpg"));
+    }
+    
 
 }
