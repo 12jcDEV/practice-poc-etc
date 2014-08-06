@@ -92,7 +92,11 @@
         <Component class="javax.swing.JTextField" name="txtURL">
           <Properties>
             <Property name="toolTipText" type="java.lang.String" value="Type URL here"/>
+            <Property name="name" type="java.lang.String" value="txtURL" noResource="true"/>
           </Properties>
+          <AccessibilityProperties>
+            <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="txtURL"/>
+          </AccessibilityProperties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtURLActionPerformed"/>
           </Events>
@@ -100,6 +104,7 @@
         <Component class="javax.swing.JButton" name="btnDownload">
           <Properties>
             <Property name="text" type="java.lang.String" value="Download Images!"/>
+            <Property name="name" type="java.lang.String" value="btnDownload" noResource="true"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDownloadActionPerformed"/>
@@ -225,6 +230,7 @@
             <Component class="javax.swing.JButton" name="btnBrowseDir">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Browse"/>
+                <Property name="name" type="java.lang.String" value="btnBrowse" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBrowseDirActionPerformed"/>

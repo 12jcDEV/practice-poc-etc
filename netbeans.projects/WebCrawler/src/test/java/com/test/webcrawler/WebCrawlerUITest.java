@@ -28,7 +28,7 @@ public class WebCrawlerUITest {
 
     private static final String WEB_CRAWLER_MAIN_PACKAGE = "com.webcrawler.WebCrawlerMain";
     private static final String IMAGE_DOWNLOADER = "Image Downloader";
-    private static final String IMAGE_FOLDER_LOC = "/home/jose/CrapHole";
+    private static final String IMAGE_FOLDER_LOC = "/home/jose/PicBase";
     
     public WebCrawlerUITest() {
     }
@@ -43,6 +43,8 @@ public class WebCrawlerUITest {
 
     @Before
     public void setUp() throws Exception {
+        
+        
     }
 
     @After
@@ -89,16 +91,16 @@ public class WebCrawlerUITest {
 
     }
 
-    @Test
-    public void testOpenFileChooser() throws Exception {
-
-        new ClassReference(WEB_CRAWLER_MAIN_PACKAGE).startApplication();
-        main = new JFrameOperator(IMAGE_DOWNLOADER);
-        new JButtonOperator(main, "Browse").push();
-        
-        new JFileChooserOperator().chooseFile(IMAGE_FOLDER_LOC);
-        new JTextFieldOperator(main, IMAGE_FOLDER_LOC);
-        
-    }
+//    @Test
+//    public void testOpenFileChooser() throws Exception {
+//
+//        new ClassReference(WEB_CRAWLER_MAIN_PACKAGE).startApplication();
+//        main = new JFrameOperator(IMAGE_DOWNLOADER);
+//        new JButtonOperator(main, "Browse").push();
+//        
+//        new JFileChooserOperator().chooseFile(IMAGE_FOLDER_LOC);
+//        new JTextFieldOperator(main, IMAGE_FOLDER_LOC);
+//        
+//    }
 
 }

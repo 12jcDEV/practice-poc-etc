@@ -24,7 +24,7 @@ public class DownloadManagerTest extends BaseTest {
 
     private static final String URL = "http://www.stableapps.com";
 
-    private static final String FOLDER_LOC = "/home/jose/CrapHole";
+    private static final String FOLDER_LOC = "/home/jose/PicBase";
 
     @Autowired
     private ImageManager imageManager;
@@ -70,6 +70,11 @@ public class DownloadManagerTest extends BaseTest {
     @Test(expected = IllegalArgumentException.class)
     public void testImageEmpty() throws Exception {
     downloadManager.processDownload(FOLDER_LOC,null, ui);
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void testNonExistentFolder() throws Exception {
+        downloadManager.processDownload("/sadf/asdf/asdfsadfaf", imageManager.getImageData(URL), ui);
     }
     
     public void testDownload() throws Exception {

@@ -116,6 +116,7 @@ public class WebCrawlerMain extends javax.swing.JFrame implements UIManager {
         lblEnterURL.setText("Enter URL");
 
         txtURL.setToolTipText("Type URL here");
+        txtURL.setName("txtURL"); // NOI18N
         txtURL.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtURLActionPerformed(evt);
@@ -123,6 +124,7 @@ public class WebCrawlerMain extends javax.swing.JFrame implements UIManager {
         });
 
         btnDownload.setText("Download Images!");
+        btnDownload.setName("btnDownload"); // NOI18N
         btnDownload.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDownloadActionPerformed(evt);
@@ -151,6 +153,8 @@ public class WebCrawlerMain extends javax.swing.JFrame implements UIManager {
                     .addComponent(txtURL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnDownload)))
         );
+
+        txtURL.getAccessibleContext().setAccessibleName("txtURL");
 
         pnlDownload.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -185,6 +189,7 @@ public class WebCrawlerMain extends javax.swing.JFrame implements UIManager {
         txtFldChooseDir.setEnabled(false);
 
         btnBrowseDir.setText("Browse");
+        btnBrowseDir.setName("btnBrowse"); // NOI18N
         btnBrowseDir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBrowseDirActionPerformed(evt);

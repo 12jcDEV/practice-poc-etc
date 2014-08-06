@@ -30,6 +30,7 @@ public class StorageManagerImpl implements StorageManager {
 
     @Override
     public InputStream downloadImagesFromRemote(String imageURL) throws FileNotFoundException, IOException {
+        contentLength = 0;
         URL url = new URL(imageURL);
         httpConnection = (HttpURLConnection) url.openConnection();
         int responseCode = httpConnection.getResponseCode();
