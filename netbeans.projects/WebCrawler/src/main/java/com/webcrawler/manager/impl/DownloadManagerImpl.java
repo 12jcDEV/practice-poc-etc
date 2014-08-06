@@ -95,10 +95,10 @@ public class DownloadManagerImpl implements DownloadManager, PropertyChangeListe
                 imagetraverse:
                 for (ImageDTO dto : images) {
                     System.out.println("Retrieving file " + dto.getUrlAddress());
-                    
+
                     try {
-                        storageManager.downloadImagesFromRemote(dto.getUrlAddress());
-                    } catch(IOException ioe) {
+                        is = storageManager.downloadImagesFromRemote(dto.getUrlAddress());
+                    } catch (IOException ioe) {
                         System.out.println("Cannot download file with url " + dto.getUrlAddress());
                         System.out.println("Skipping...");
                         ioe.printStackTrace();
@@ -106,32 +106,31 @@ public class DownloadManagerImpl implements DownloadManager, PropertyChangeListe
                     }
                     ui.setUIFileInfo(dto.getFileName(), storageManager.getContentLength());
 
-                    is = storageManager.getInputStream();
-
                     try {
                         fos = new FileOutputStream(folderLocation + File.separator + dto.getFileName());
+                        buffer = new byte[BUFFER_SIZE];
+                        int bytesRead = -1;
+                        int totalBytesRead = 0;
+                        int percentCompleted = 0;
+
+                        while ((bytesRead = is.read(buffer)) != -1) {
+
+                            fos.write(buffer, 0, bytesRead);
+                            totalBytesRead += bytesRead;
+                            percentCompleted = (int) (totalBytesRead * 100 / storageManager.getContentLength());
+
+                            publish(percentCompleted);
+                        }
+
                     } catch (IOException ie) {
                         ie.printStackTrace();
                         System.out.println("Error with the file " + dto.getFileName() + " skipping this file....");
                         break imagetraverse;
+                    } finally {
+
+                        fos.close();
+                        storageManager.disconnect();
                     }
-
-                    buffer = new byte[BUFFER_SIZE];
-                    int bytesRead = -1;
-                    int totalBytesRead = 0;
-                    int percentCompleted = 0;
-
-                    while ((bytesRead = is.read(buffer)) != -1) {
-
-                        fos.write(buffer, 0, bytesRead);
-                        totalBytesRead += bytesRead;
-                        percentCompleted = (int) (totalBytesRead * 100 / storageManager.getContentLength());
-
-                        publish(percentCompleted);
-                    }
-
-                    fos.close();
-                    storageManager.disconnect();
 
                 }
             } catch (IOException ex) {
@@ -142,6 +141,14 @@ public class DownloadManagerImpl implements DownloadManager, PropertyChangeListe
                 publish(0);
                 cancel(true);
                 throw ex;
+            } finally {
+
+                try {
+                    is.close();
+                    fos.close();
+                } catch (IOException disregard) {
+                }
+
             }
 
             return null;

@@ -7,10 +7,8 @@ package com.test.webcrawler;
 
 import com.webcrawler.manager.DownloadManager;
 import com.webcrawler.manager.ImageManager;
-import com.webcrawler.manager.StorageManager;
 import com.webcrawler.manager.UIManager;
 import mockit.Mocked;
-import mockit.NonStrictExpectations;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

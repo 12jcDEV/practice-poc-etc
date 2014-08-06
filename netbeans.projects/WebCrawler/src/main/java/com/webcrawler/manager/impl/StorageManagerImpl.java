@@ -29,7 +29,7 @@ public class StorageManagerImpl implements StorageManager {
     private int contentLength;
 
     @Override
-    public boolean downloadImagesFromRemote(String imageURL) throws FileNotFoundException, IOException {
+    public InputStream downloadImagesFromRemote(String imageURL) throws FileNotFoundException, IOException {
         URL url = new URL(imageURL);
         httpConnection = (HttpURLConnection) url.openConnection();
         int responseCode = httpConnection.getResponseCode();
@@ -44,7 +44,7 @@ public class StorageManagerImpl implements StorageManager {
             throw new IOException("Error with url " + imageURL + ": " + responseCode);
 
         }
-        return true;
+        return inputStream;
     }
 
     public void disconnect() throws IOException {

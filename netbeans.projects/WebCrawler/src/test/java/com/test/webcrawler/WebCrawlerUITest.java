@@ -5,6 +5,7 @@
  */
 package com.test.webcrawler;
 
+import java.io.File;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -27,7 +28,8 @@ public class WebCrawlerUITest {
 
     private static final String WEB_CRAWLER_MAIN_PACKAGE = "com.webcrawler.WebCrawlerMain";
     private static final String IMAGE_DOWNLOADER = "Image Downloader";
-
+    private static final String IMAGE_FOLDER_LOC = "/home/jose/CrapHole";
+    
     public WebCrawlerUITest() {
     }
 
@@ -94,8 +96,8 @@ public class WebCrawlerUITest {
         main = new JFrameOperator(IMAGE_DOWNLOADER);
         new JButtonOperator(main, "Browse").push();
         
-        JFileChooserOperator.findJFileChooser(main.getContentPane());
-        //assertNotNull(jfc);
+        new JFileChooserOperator().chooseFile(IMAGE_FOLDER_LOC);
+        new JTextFieldOperator(main, IMAGE_FOLDER_LOC);
         
     }
 

@@ -10,7 +10,7 @@ import com.webcrawler.manager.impl.StorageManagerImpl;
 import java.io.IOException;
 import org.junit.After;
 import org.junit.AfterClass;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -49,19 +49,19 @@ public class StorageManagerTest extends BaseTest {
     @Test
     public void testDownloadImagesFromRemote() throws Exception {
 
-        assertTrue(storageManager.downloadImagesFromRemote(IMG_URL));
+        assertNotNull(storageManager.downloadImagesFromRemote(IMG_URL));
 
     }
     
     @Test(expected = IOException.class)
     public void testErrorUrl() throws Exception {
     
-        assertTrue(storageManager.downloadImagesFromRemote("qwdwqdwqdwqdwqdqw"));
+        assertNotNull(storageManager.downloadImagesFromRemote("qwdwqdwqdwqdwqdqw"));
     }
     
     @Test(expected = IOException.class) 
     public void testURLNonExistent() throws Exception {
-        assertTrue(storageManager.downloadImagesFromRemote("http://wwwqwdwqdwqdwqdwqdqw.com/image.jpg"));
+        assertNotNull(storageManager.downloadImagesFromRemote("http://wwwqwdwqdwqdwqdwqdqw.com/image.jpg"));
     }
     
 
